@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+{% block title %}
+TODO
+{% endblock %}
+<body>
+    {% block body %}
+    <div class="container list-page" id="list">
+        <div class="btn-menu list-button">
+            <a href="{{ url_for('create_page') }}" class="btn btn-primary">Создать</a>
+        </div>
+        <table id="tasks">
+            <tr>
+                <th width="20%">Выполнено</th>
+                <th width="80%">Название</th>
+            </tr>
+            {% if tasks %}
+                {% for task in tasks %}
+                    <tr id="{{task.id}}">
+                        <td class="checkbox-col">
+                            <input type="checkbox" id="check{{ task.id }}" class="task-checkbox">
+                        </td>
+                        <td class="title-col">
+                            <a href="{{ url_for('task_details', id=task.id) }}">
+                            <div style="height:100%;width:100%">
+                            {% if not task.done %}
+                            <span class="task-title" id="title{{ task.id }}">{{task.title}}</span>
+                            {% else %}
+                            <span class="task-title" id="title{{ task.id }}"><s>{{task.title}}</s></span>
+                            {% endif %}
+                            </div>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td class="checkbox-col"></td>
+                    <td class="title-col">
+                        <i style="color:gray">Элементы отсутствуют</i>
+                    </td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+    {% endblock %}
+    {% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            {% for task in tasks %}
+                {% if task.done %}
+                    var checkboxid = "#check"+{{task.id}}
+                    $(checkboxid).prop('checked', true);
+                {% endif %}
+            {% endfor %}
+        });
+    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='index.html.js') }}"></script>
+    {% endblock %}
+</body>

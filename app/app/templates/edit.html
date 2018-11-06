@@ -1,0 +1,93 @@
+{% extends 'layout.html' %}
+{% block title %}
+TODO - Edit
+{% endblock %}
+{% block body %}
+<div class="container edit-page" id="edit">
+    <div class="btn-menu list-button">
+        <a href="{{ url_for('index') }}" title="На главную" class="btn btn-primary"><i class="fas fa-arrow-alt-circle-left"></i></a>
+    </div>
+    <div class="row task-edit">
+        <div class="col-sm-4 task-details details-title">
+            <span>Название:</span>
+        </div>
+        <div class="col-sm-6 task-details details-content" id="task-title">
+            <span>{{ task.title }}</span>
+        </div>
+        <div class="col-sm-2 btn-menu task-details" id="task-title-button">
+            <button class="btn btn-primary" title="редактировать" id="edit-title" onclick="edit_title()"><i class="fas fa-edit"></i></button>
+        </div>
+    </div>
+    <div class="row task-edit">
+        <div class="col-sm-4 task-details details-title">
+            <span>Описание:</span>
+        </div>
+        <div class="col-sm-6 task-details details-content" id="task-content">
+            <span>
+                {% if task.content %}
+                    {{ task.content }}
+                {% else %}
+                    <i style="color:gray">Описание отсутствует</i>
+                {% endif %}
+            </span>
+        </div>
+        <div class="col-sm-2 task-details" id="task-content-button">
+            <button class="btn btn-primary" title="редактировать" id="edit-content" onclick="edit_content()"><i class="fas fa-edit"></i></button>
+        </div>
+    </div>
+    <div class="row task-edit">
+        <div class="col-sm-4 task-details details-title">
+            <span>Статус:</span>
+        </div>
+        <div class="col-sm-6 task-details details-content" id="task-done">
+            <select id="edit-done">
+                {% if task.done %}
+                <option value="1" selected="selected">Выполнено</option>
+                <option value="0">Не выполнено</option>
+                {% else %}
+                <option value="1">Выполнено</option>
+                <option value="0" selected="selected">Не выполнено</option>
+                {% endif %}
+            </select>
+        </div>
+    </div>
+    <div class="row task-edit">
+        <div class="col-sm-10"></div>
+        <div class="col-sm-2 btn-menu">
+            <button class="btn btn-default" title="удалить" id="delete" style="margin:5px;color:white;background-color:red"><i class="fas fa-trash-alt"></i></button>
+        </div>
+    </div>
+</div>
+<div class="modal">
+    <div class="modal-content">
+        <div id="delete-screen" class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4" align="center">Удалить?</div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4 btn-menu" align="center">
+                <button class="btn btn-default" title="подтвердить" id="delete-yes" style="margin:5px;color:white;background-color:green"><i class="fas fa-check"></i></button>
+                <button class="btn btn-default" title="отменить" id="delete-no" style="margin:5px;color:white;background-color:red"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    var data = {
+        id:{{ task.id }},
+        title:"{{ task.title }}",
+        content:"",
+        done:0
+    };
+    {% if task.content %}
+        data.content = "{{ task.content }}";
+    {% endif %}
+    {% if task.done %}
+        data.done = 1;
+    {% endif %}
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='edit.html.js') }}"></script>
+{% endblock %}

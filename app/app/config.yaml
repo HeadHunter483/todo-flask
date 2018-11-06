@@ -1,0 +1,4 @@
+server:
+  secret: '1234567890'
+database:
+  name: test.db
